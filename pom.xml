@@ -31,10 +31,6 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
@@ -89,12 +85,12 @@
              即devtools会监听classpath下的文件变动，并且会立即重启应用（发生在保存时机），
              注意：因为其采用的虚拟机机制，该项重启是很快的
          -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>${spring-boot.version}</version>
-            <optional>true</optional>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-devtools</artifactId>-->
+            <!--<version>${spring-boot.version}</version>-->
+            <!--<optional>true</optional>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -112,10 +108,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <!--fork :  如果没有该项配置,devtools不会起作用，即应用不会restart -->
-                    <fork>true</fork>
-                </configuration>
+                <!--<configuration>-->
+                    <!--&lt;!&ndash;fork :  如果没有该项配置,devtools不会起作用，即应用不会restart &ndash;&gt;-->
+                    <!--<fork>true</fork>-->
+                <!--</configuration>-->
             </plugin>
         </plugins>
     </build>

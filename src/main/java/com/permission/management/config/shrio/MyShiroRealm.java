@@ -63,7 +63,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     /**
      *权限控制
-     *此方法调用  hasRole,hasPermission的时候才会进行回调.
+     *此方法调用  hasRole,hasPermission 的时候才会进行回调.
      *此方法中主要是使用类：SimpleAuthorizationInfo进行角色的添加和权限的添加。
      *  authorizationInfo.addRole(role.getRole());
      *  authorizationInfo.addStringPermission(p.getPermission());
@@ -91,10 +91,9 @@ public class MyShiroRealm extends AuthorizingRealm {
          * 缓存过期之后会再次执行。
          */
         System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
-
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        UserInfo userInfo  = (UserInfo)principals.getPrimaryPrincipal();
-
+        System.out.println("权限配置-->principals.getPrimaryPrincipal()："+ principals.getPrimaryPrincipal());
+        UserInfo userInfo  = (UserInfo) principals.getPrimaryPrincipal();
         try {
             for(SysRole role:userInfo.getRoleList()){
                 authorizationInfo.addRole(role.getRole());
