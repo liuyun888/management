@@ -15,7 +15,6 @@ public class SysPermission implements Serializable {
     @GeneratedValue
     private long id;//主键.
     private String name;//名称.
-
     @Column(columnDefinition="enum('menu','button')")
     private String resourcetype;//资源类型，[menu|button]
     private String url;//资源路径.

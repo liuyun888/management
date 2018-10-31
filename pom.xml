@@ -24,7 +24,8 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.0.6.RELEASE</spring-boot.version>
         <shiro.version>1.4.0</shiro.version>
-
+        <shiro-redis.version>2.4.2.1-RELEASE</shiro-redis.version>
+        <fastjson.version>1.2.39</fastjson.version>
     </properties>
 
     <dependencies>
@@ -65,7 +66,11 @@
             <artifactId>shiro-ehcache</artifactId>
             <version>${shiro.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>${shiro-redis.version}</version>
+        </dependency>
         <!--
             包含支持UI模版（Velocity，FreeMarker，JasperReports），
             邮件服务，
@@ -89,6 +94,11 @@
             <artifactId>spring-boot-devtools</artifactId>
             <version>${spring-boot.version}</version>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
     </dependencies>
 
