@@ -40,7 +40,6 @@ public class ShiroConfiguration {
 
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
 
