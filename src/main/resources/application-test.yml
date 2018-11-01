@@ -9,7 +9,7 @@ spring:
     show-sql: true
     #hibernate 自动更新表结构
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:

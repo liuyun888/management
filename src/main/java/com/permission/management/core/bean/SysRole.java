@@ -12,7 +12,7 @@ import java.util.List;
 public class SysRole implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 编号
     @Column(unique=true)
     private String role; // 角色标识 程序中判断使用,如"admin",这个是唯一的:

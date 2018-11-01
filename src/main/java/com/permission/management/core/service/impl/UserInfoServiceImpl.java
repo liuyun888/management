@@ -30,14 +30,17 @@ public class  UserInfoServiceImpl implements UserInfoService {
         JSONObject userObject =JSONObject.fromObject(userInfo, jsonConfig);
         return userObject;
     }
-
-
-
     /**通过username查找用户信息;用户身份验证*/
     public UserInfo getByUsername(String username)
     {
         System.out.println("UserInfoServiceImpl.findByUsername()");
         return userInfoRepository.findByUsername(username);
+    }
+
+    @Override
+    public int addUserInfo(UserInfo userInfo) {
+        userInfoRepository.save(userInfo);
+        return 0;
     }
 
 }

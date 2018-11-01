@@ -1,6 +1,8 @@
 package com.permission.management.core.bean;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,11 +13,19 @@ import java.util.List;
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long uid;//用户id;
-    @Column(unique=true)
+    @NotEmpty(message = "用户名不能为空")
+    @Size(min = 4, max = 20, message = "用户名长度必须为4-20个字符")
+    @Column(nullable = false, length = 20, unique = true)
     private String username;//账号.
+    @NotEmpty(message = "昵称不能为空")
+    @Size(min = 2, max = 20, message = "昵称长度必须为2-20个字符")
+    @Column(nullable = false, length = 20)
     private String name;//名称（昵称或者真实姓名）
+    @NotEmpty(message = "密码不能为空")
+    @Size(max = 100, message = "密码长度最多100个字符")
+    @Column(length = 100)
     private String password; //密码;
     private String salt;//加密密码的盐
     private byte state;//用户状态,0:创建未认证（比如没有激活，没有输入验证码等等）--等待验证的用户 , 1:正常状态,2：用户被锁定.

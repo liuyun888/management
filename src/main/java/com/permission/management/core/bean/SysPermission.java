@@ -12,7 +12,7 @@ public class SysPermission implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;//主键.
     private String name;//名称.
     @Column(columnDefinition="enum('menu','button')")

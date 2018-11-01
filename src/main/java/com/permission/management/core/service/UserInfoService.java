@@ -10,5 +10,7 @@ public interface UserInfoService {
 
     /**通过username查找用户信息;用户身份验证*/
     UserInfo getByUsername(String username);
+    /**新增用户 */
+    int addUserInfo(UserInfo userInfo);
 
 }
