@@ -70,6 +70,11 @@ public class UserInfoController {
     private List getPermission(JSONArray roleListArray) {
         //权限List
         List permissions = new ArrayList();
+        //权限名称List
+        List permissionNames = new ArrayList();
+        //权限路径List
+        List permissionUrls = new ArrayList();
+
         //遍历userInfo的角色List
         for (int i = 0; i < roleListArray.size(); i++) {
             //转化为JSONObject
@@ -85,13 +90,25 @@ public class UserInfoController {
                     //转化为JSONObject
                     JSONObject  permissionJson =JSONObject.fromObject(permissionList.get(j));
                     //转为SysPermission实体
-                    SysPermission permissionJsonDate = (SysPermission) JSONObject.toBean(permissionJson, SysPermission.class);
-                    //获取实体中权限数据
-                    permissions.add(permissionJsonDate.getPermission());
+                    SysPermission permissionJsonData = (SysPermission) JSONObject.toBean(permissionJson, SysPermission.class);
+                    //获取实体中权限
+                    permissions.add(permissionJsonData.getPermission());
+                    //获取实体中权限名称
+                    permissionNames.add(permissionJsonData.getName());
+                    //获取实体中权限路径
+                    permissionUrls.add(permissionJsonData.getUrl());
                 }
             }
         }
-        return permissions;
+
+        Map map = new HashMap();
+        map.put("permissions",permissions);
+        map.put("permissionNames",permissionNames);
+        map.put("permissionUrls",permissionUrls);
+        List<Map<String, String>> listMaps = new ArrayList<>();
+        listMaps.add(map);
+
+        return listMaps;
     }
 
     /**
