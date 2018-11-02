@@ -6,7 +6,12 @@ import com.permission.management.core.bean.UserInfo;
 import com.permission.management.core.service.UserInfoService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.RandomNumberGenerator;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
@@ -19,6 +24,13 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/userInfo")
 public class UserInfoController {
+
+    //随机数生成器
+    private static RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
+    //指定散列算法为md5
+    private String algorithmName = "MD5";
+    //散列迭代次数
+    private final int hashIterations = 2;
 
     @Resource
     private UserInfoService userInfoService;
@@ -121,6 +133,14 @@ public class UserInfoController {
     public String userInfoAdd(UserInfo userInfo){
         JSONObject jsonObject = new JSONObject();
         try {
+            //生成salt
+            userInfo.setSalt(randomNumberGenerator.nextBytes().toHex());
+            //生成加密密码
+            String newPassword =
+                    new SimpleHash(algorithmName,userInfo.getPassword(),
+                            ByteSource.Util.bytes(userInfo.getCredentialsSalt()),hashIterations).toHex();
+            userInfo.setPassword(newPassword);
+
             userInfoService.addUserInfo(userInfo);
             jsonObject.put("msg", "用户新增成功");
         }catch (Exception e) {
@@ -137,5 +157,12 @@ public class UserInfoController {
     @RequiresPermissions("userInfo:del")//权限管理;
     public String userDel(){
         return "userInfoDel";
+    }
+
+    public static String getUUID(){
+        UUID uuid=UUID.randomUUID();
+        String str = uuid.toString();
+        String uuidStr=str.replace("-", "");
+        return uuidStr;
     }
 }

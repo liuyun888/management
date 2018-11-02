@@ -114,7 +114,7 @@ public class ShiroConfiguration {
     @Bean
     public MyShiroRealm myShiroRealm(){
        MyShiroRealm myShiroRealm = new MyShiroRealm();
-       myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());;
+       myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
        return myShiroRealm;
     }
     //自定义sessionManager
