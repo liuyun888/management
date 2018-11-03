@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
@@ -28,7 +29,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public void delSysRole(Long uid) {
-        sysRoleRepository.existsById(uid);
+        sysRoleRepository.deleteById(uid);
     }
 
     @Override
@@ -41,5 +42,18 @@ public class SysRoleServiceImpl implements SysRoleService {
         return sysRoleRepository.getRolePermission(roleId,permissionId);
     }
 
+    @Override
+    public SysRole getByRole(String role) {
+        return sysRoleRepository.findByRole(role) ;
+    }
 
+    @Override
+    public Optional<SysRole> findSysRoleById(Long uid) {
+        return sysRoleRepository.findById(uid);
+    }
+
+    @Override
+    public void updateSysRole(SysRole sysRole) {
+        sysRoleRepository.save(sysRole);
+    }
 }

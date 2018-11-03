@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SysPermissionRepository extends JpaRepository<SysPermission,Long> {
 
+    /**通过name查找权限信息;*/
+    SysPermission findByName(String name);
 }

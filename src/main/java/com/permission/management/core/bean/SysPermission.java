@@ -14,6 +14,7 @@ public class SysPermission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;//主键.
+    @Column(nullable = false, length = 20, unique = true)
     private String name;//名称.
     @Column(columnDefinition="enum('menu','button')")
     private String resourcetype;//资源类型，[menu|button]
@@ -21,7 +22,7 @@ public class SysPermission implements Serializable {
     private String permission; //权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view
     private Long parentid; //父编号
     private String parentids; //父编号列表
-    private Boolean available = Boolean.FALSE;
+    private Boolean available;
 
     @ManyToMany
     @JoinTable(name="SysRolePermission",joinColumns={@JoinColumn(name="permissionid")},inverseJoinColumns={@JoinColumn(name="roleid")})

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.permission.management.core.utils.UserInfoUtil.getRoleListInfo;
@@ -98,6 +99,8 @@ public class UserInfoController {
     public String userInfoAdd(UserInfo userInfo){
         JSONObject jsonObject = new JSONObject();
         try {
+           UserInfo userInfoForCheck =  userInfoService.getByUsername(userInfo.getUsername());
+           if(userInfoForCheck != null){ jsonObject.put("msg", "该用户名已存在");return jsonObject.toString();}
             //生成salt
             userInfo.setSalt(randomNumberGenerator.nextBytes().toHex());
             //生成加密密码
@@ -120,10 +123,10 @@ public class UserInfoController {
      */
     @RequestMapping(value = "/userDel", method = RequestMethod.DELETE)
     @RequiresPermissions("userInfo:del")//权限管理;
-    public String userDel(Long uid){
+    public String userDel(UserInfo userInfo){
         JSONObject jsonObject = new JSONObject();
         try {
-            userInfoService.delUserInfo(uid);
+            userInfoService.delUserInfo(userInfo.getUid());
             jsonObject.put("msg", "用户删除成功");
         } catch (Exception e) {
             jsonObject.put("msg", "用户删除失败："+e.getMessage());
@@ -156,7 +159,6 @@ public class UserInfoController {
     }
     /**
      * 批量设置用户角色
-     * TODO 可以重复插入
      * @return
      */
     @RequestMapping(value = "/setUserRoles", method = RequestMethod.POST)
@@ -179,6 +181,51 @@ public class UserInfoController {
         }
         return jsonObject.toString();
     }
+
+
+    /**
+     * 用户更新;
+     * @return
+     */
+    @RequestMapping(value = "/userUpdate", method = RequestMethod.POST)
+    @RequiresPermissions("userInfo:update")//权限管理;
+    public String userInfoUpdate(UserInfo userInfo){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            long id = userInfo.getUid();
+            if(id == 0) {
+                jsonObject.put("msg", "请选择要修改的用户");
+                return jsonObject.toString();
+            }else {
+                UserInfo userInfoForCheck =  userInfoService.getByUsername(userInfo.getUsername());
+                if(userInfoForCheck != null){ jsonObject.put("msg", "该用户名已存在");return jsonObject.toString();}
+                //Return default value if Optional is empty
+                Optional<UserInfo> userInfoOptional = userInfoService.getByUid(userInfo.getUid());
+                //uid
+                userInfo.setUid(userInfo.getUid());
+                //username
+                userInfo.setUsername(Optional.ofNullable(userInfo.getUsername()).orElse(userInfoOptional.get().getUsername()));
+                //name
+                userInfo.setName(Optional.ofNullable(userInfo.getName()).orElse(userInfoOptional.get().getName()));
+                //生成salt
+                userInfo.setSalt(randomNumberGenerator.nextBytes().toHex());
+                //生成加密密码
+                String newPassword =
+                        new SimpleHash(algorithmName,userInfo.getPassword(),
+                                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),hashIterations).toHex();
+                userInfo.setPassword(newPassword);
+
+                userInfoService.updateUserInfo(userInfo);
+                jsonObject.put("msg", "用户信息更新成功");
+            }
+        } catch (Exception e) {
+            jsonObject.put("msg", "用户信息更新失败："+e.getMessage());
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
+    }
+
+
 
 
     public static String getUUID(){

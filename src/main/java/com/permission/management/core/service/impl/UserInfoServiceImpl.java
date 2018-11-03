@@ -1,7 +1,6 @@
 package com.permission.management.core.service.impl;
 
 import net.sf.json.JSONObject;
-import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.CycleDetectionStrategy;
 import com.permission.management.core.bean.UserInfo;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -35,6 +35,12 @@ public class  UserInfoServiceImpl implements UserInfoService {
         System.out.println("UserInfoServiceImpl.findByUsername()");
         return userInfoRepository.findByUsername(username);
     }
+
+    @Override
+    public Optional<UserInfo> getByUid(Long uid) {
+        return userInfoRepository.findById(uid);
+    }
+
     /**查找用户信息列表*/
     @Override
     public  List<UserInfo> findUserInfoList() {
@@ -61,6 +67,11 @@ public class  UserInfoServiceImpl implements UserInfoService {
     @Override
     public int getUserRole(Long uid, Long roleid) {
         return userInfoRepository.getUserRole(uid,roleid);
+    }
+
+    @Override
+    public void updateUserInfo(UserInfo userInfo) {
+        userInfoRepository.save(userInfo);
     }
 
 

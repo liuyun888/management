@@ -21,6 +21,11 @@ public class SysPermissionServiceImpl implements SysPermissionService {
     }
 
     @Override
+    public SysPermission findSysPermissionByName(String name) {
+        return sysPermissionRepository.findByName(name);
+    }
+
+    @Override
     public Optional<SysPermission> findSysPermissionById(Long uid) {
         return sysPermissionRepository.findById(uid);
     }
@@ -36,8 +41,8 @@ public class SysPermissionServiceImpl implements SysPermissionService {
     }
 
     @Override
-    public void updateSysPermission(Long uid,SysPermission sysPermission) {
-
+    public void updateSysPermission(SysPermission sysPermission) {
+        sysPermissionRepository.save(sysPermission);
 
     }
 }

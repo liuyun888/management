@@ -70,6 +70,8 @@ public class SysPermissionController {
     public String permissionAdd(SysPermission sysPermission){
         JSONObject jsonObject = new JSONObject();
         try {
+            SysPermission sysPermissionForCheck = sysPermissionService.findSysPermissionByName(sysPermission.getName());
+            if(sysPermissionForCheck != null){ jsonObject.put("msg", "该权限已存在");return jsonObject.toString();}
             sysPermission.setAvailable(true);
             sysPermissionService.addSysPermission(sysPermission);
             jsonObject.put("msg", "权限新增成功");
@@ -85,10 +87,10 @@ public class SysPermissionController {
      */
     @RequestMapping(value = "/permissionDel", method = RequestMethod.DELETE)
     @RequiresPermissions("sysPermission:del")//权限管理;
-    public String permissionDel(Long uid){
+    public String permissionDel(Long id){
         JSONObject jsonObject = new JSONObject();
         try {
-            sysPermissionService.delSysPermission(uid);
+            sysPermissionService.delSysPermission(id);
             jsonObject.put("msg", "权限删除成功");
         } catch (Exception e) {
             jsonObject.put("msg", "权限删除失败："+e.getMessage());
@@ -107,24 +109,36 @@ public class SysPermissionController {
         try {
             long id = sysPermission.getId();
             if(id == 0) {
-                jsonObject.put("msg", "无该ID值的权限");
+                jsonObject.put("msg", "请选择要修改的权限");
                 return jsonObject.toString();
             }else {
+                SysPermission sysPermissionForCheck = sysPermissionService.findSysPermissionByName(sysPermission.getName());
+                if(sysPermissionForCheck != null){ jsonObject.put("msg", "该权限已存在");return jsonObject.toString();}
+                //Return default value if Optional is empty
                 Optional<SysPermission> sysPermissionOptional = sysPermissionService.findSysPermissionById(sysPermission.getId());
-
-
-
-
-                sysPermissionService.updateSysPermission(id,sysPermission);
+                //id
+                sysPermission.setId(sysPermission.getId());
+                //available
+                sysPermission.setAvailable(Optional.ofNullable(sysPermission.getAvailable()).orElse(sysPermissionOptional.get().getAvailable()));
+                //名称
+                sysPermission.setName(Optional.ofNullable(sysPermission.getName()).orElse(sysPermissionOptional.get().getName()));
+                //父编号
+                sysPermission.setParentid(Optional.ofNullable(sysPermission.getParentid()).orElse(sysPermissionOptional.get().getParentid()));
+                //父编号列表
+                sysPermission.setParentids(Optional.ofNullable(sysPermission.getParentids()).orElse(sysPermissionOptional.get().getParentids()));
+                //权限字符串
+                sysPermission.setPermission(Optional.ofNullable(sysPermission.getPermission()).orElse(sysPermissionOptional.get().getPermission()));
+                //资源类型
+                sysPermission.setResourcetype(Optional.ofNullable(sysPermission.getResourcetype()).orElse(sysPermissionOptional.get().getResourcetype()));
+                //资源路径
+                sysPermission.setUrl(Optional.ofNullable(sysPermission.getUrl()).orElse(sysPermissionOptional.get().getUrl()));
+                sysPermissionService.updateSysPermission(sysPermission);
                 jsonObject.put("msg", "权限更新成功");
             }
         } catch (Exception e) {
             jsonObject.put("msg", "权限更新失败："+e.getMessage());
             e.printStackTrace();
         }
-
-
-
         return jsonObject.toString();
     }
 

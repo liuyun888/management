@@ -15,4 +15,6 @@ public interface SysRoleRepository  extends JpaRepository<SysRole,Long> {
 
     @Query(value="select count(*) from  sys_role_permission where roleid = ? and permissionid = ?",nativeQuery=true)
     int getRolePermission(Long uid,Long roleid);
+    /**通过role查找角色信息;*/
+    SysRole findByRole(String role);
 }

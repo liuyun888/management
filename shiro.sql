@@ -47,38 +47,42 @@ INSERT INTO `sys_role` VALUES ('2', '', 'VIP会员', 'vip');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_permission`;
 CREATE TABLE `sys_role_permission` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `roleId` bigint(20) NOT NULL,
   `permissionId` bigint(20) NOT NULL,
   KEY `FK_pn90qffgw1e6lo1xhw964qadf` (`roleId`),
   KEY `FK_qr3wmwfxapktvdv5g6d4mbtta` (`permissionId`),
   CONSTRAINT `FK_pn90qffgw1e6lo1xhw964qadf` FOREIGN KEY (`roleId`) REFERENCES `sys_role` (`id`),
-  CONSTRAINT `FK_qr3wmwfxapktvdv5g6d4mbtta` FOREIGN KEY (`permissionId`) REFERENCES `sys_permission` (`id`)
+  CONSTRAINT `FK_qr3wmwfxapktvdv5g6d4mbtta` FOREIGN KEY (`permissionId`) REFERENCES `sys_permission` (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role_permission
 -- ----------------------------
-INSERT INTO `sys_role_permission` VALUES ('1', '1');
-INSERT INTO `sys_role_permission` VALUES ('1', '2');
+INSERT INTO `sys_role_permission` VALUES ('1','1', '1');
+INSERT INTO `sys_role_permission` VALUES ('2','1', '2');
 
 -- ----------------------------
 -- Table structure for sys_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `uid` bigint(20) NOT NULL,
   `roleId` bigint(20) NOT NULL,
   KEY `FK_io5ssq2ol6uqcx9nll8gfnm4n` (`uid`),
   KEY `FK_suwqmd7mystg1lwv8o4ffxaag` (`roleId`),
   CONSTRAINT `FK_io5ssq2ol6uqcx9nll8gfnm4n` FOREIGN KEY (`uid`) REFERENCES `user_info` (`uid`),
-  CONSTRAINT `FK_suwqmd7mystg1lwv8o4ffxaag` FOREIGN KEY (`roleId`) REFERENCES `sys_role` (`id`)
+  CONSTRAINT `FK_suwqmd7mystg1lwv8o4ffxaag` FOREIGN KEY (`roleId`) REFERENCES `sys_role` (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES ('1', '1');
-INSERT INTO `sys_user_role` VALUES ('1', '2');
+INSERT INTO `sys_user_role` VALUES ('1','1', '1');
+INSERT INTO `sys_user_role` VALUES ('2','1', '2');
 
 -- ----------------------------
 -- Table structure for user_info
